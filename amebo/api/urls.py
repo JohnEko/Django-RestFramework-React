@@ -9,6 +9,4 @@ urlpatterns = [
     path('create/', views.PostToCreateAPIView.as_view(), name='create'),
     path('update/<slug:slug>/', views.NewsToUpdateAPIView.as_view(), name='update'),
 
-
-
 ]
