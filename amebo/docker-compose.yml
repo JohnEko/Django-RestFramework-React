@@ -11,4 +11,18 @@ services:
       # this file create is you are in dev or prod and ur secret keys
     env_file:
       - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:17
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=djangoblog
+
+volumes:
+  postgres_data:
+
   
