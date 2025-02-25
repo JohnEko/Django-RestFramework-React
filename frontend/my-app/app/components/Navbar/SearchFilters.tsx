@@ -6,8 +6,8 @@ import { Input } from "postcss"
 const  SearchFilters = () =>{
 
 return(
-
-    <div className="h-[40px] lg:h-[64] flex flex-row item-center justify-between border rounded-full"> 
+// wrapping div for the searchfilters
+    <div className="h-[40px] lg:h-[44] flex flex-row item-center justify-between border rounded-full"> 
         <div className="hidden lg:block">
             <div className="flex flew-row items-center justify-between">
                 <div className="cursor-pointer w-[250px] h-[40px] px-8 justify-center flex flex-col rounded-full hover:bg-gray-100">
@@ -26,7 +26,7 @@ return(
                 </div>
 
                     {/* Search fields for new fields */}
-                <div className="search__input border-[2px] border-solid border-slate-500 flex flex-row items-center gap-5 p-1 rounded-[15px]">
+                <div className="cursor-pointer search__input border-[2px] border-solid border-slate-500 flex flex-row items-center gap-5 p-1 rounded-[15px]">
                     <div className="relative">
                         <Search className="absolute left-3 h-4 w-4 top-1 text-muted-foreground" />                    
                         <input type="q" placeholder="Search topic...." className="pl-9 w-full" />

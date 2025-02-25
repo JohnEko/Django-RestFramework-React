@@ -9,11 +9,11 @@ import AddPropertyButton from "./AddPropertyButton";
 
 const Navbar = () =>{
     return(
-        <nav className="w-full fixed top 0 left-0 py-6 border-b bg-white z-10">
+        <nav className="w-full fixed top 0 left-0 py-6 border-b bg-white z-100">
             <div className="max-w-[1500px] mx-auto px-6">
-                <div className="flex justify-between item-center">
+                <div className="flex justify-between item-center ">
                     
-                    <Link href="/">
+                    <Link href="/" className="p-2">
                         {/* <Image 
                             src=""
                             alt="Amebonaija"

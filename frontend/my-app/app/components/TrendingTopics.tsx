@@ -11,8 +11,7 @@ import { MessageSquare, ThumbsUp } from "lucide-react"
 const TrendingTopics =()=>{
 
     return (
-        <div className="flex items-center justify-between">
-           
+          <div className="flex items-center justify-between gap-10">
                 <Card>
                 <CardHeader>
                     <CardTitle className="flrx item-center">Trending Topics</CardTitle>
