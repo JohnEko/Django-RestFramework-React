@@ -4,8 +4,8 @@ import ReservationSideBar from "../ReservationSideBar"
  const ProperDetailsPage = () =>{
 
     return(
-        <main className="max-w-[1500px] mx-auto px-6">
-            <div className="w-full h-[64vh] overflow-hidden rounded-x1 relative">
+        <main className="max-w-[1500px] mx-auto px-6 pb-6">
+            <div className="w-full h-[64vh] mb-4 overflow-hidden rounded-x1 relative">
                 <Image 
                     fill
                     src='/BeachPhoto.jpg'
@@ -16,7 +16,9 @@ import ReservationSideBar from "../ReservationSideBar"
                 {/* Lets make the screen be seperated 
                 so we can get information from the property */}
             </div>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-4">
+            {/* //This div class grid col makes the reservation share the screen bord with the property */}
+            
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="py-6 pr-6 col-span-3">
                     <h3 className="mb-4 text-4xl">Details</h3>
 
@@ -33,7 +35,7 @@ import ReservationSideBar from "../ReservationSideBar"
                             alt="The user name"
                         
                         />
-                        <p><strong>Jame Simon</strong> is your host</p>
+                        <p><strong>Jame Simon</strong> is your Author and Host</p>
 
                     </div>
                     <hr />
