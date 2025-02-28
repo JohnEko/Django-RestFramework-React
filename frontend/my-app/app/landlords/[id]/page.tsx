@@ -26,8 +26,10 @@ const LandlordDetailPage = () =>{
                 </aside>
 
                 {/* this shift the text to the right place 
-                and if we want to get the tpix horizontally we use this*/}
-                <div className="col-span-3 pl-0 md:pl-6">
+                and if we want to get the tpix horizontally we use this
+                On smaller devices col-span-1  and larger devices md:col-span-3
+                to make the screen balance check the top dev col-span on smaller and larger devices*/}
+                <div className="col-span-1 md:col-span-3 pl-0 md:pl-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <PropertyList />
                     </div>
