@@ -1,3 +1,5 @@
+'user client'
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import Image from "next/image";
@@ -10,13 +12,19 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
+import MenuLink from "./MenuLink";
 
 const UserNav = () => {
+    // using this function for our dropdown
+    const [isOpen, setIsOpen] = useState(false)
     // working with the user navigation bar
     //the navigation bar left
+    // onclick if a user click the navigation bar they see what is in
     return(
         <div className="p-2 relative inline-block border">
-            <button className="flex item-center">
+            <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex item-center">
             {/* get below code from heroicons */}
             <svg  fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -26,6 +34,20 @@ const UserNav = () => {
             </svg>
 
             </button>
+
+            {(isOpen &&
+            // make the button below each other flex flex-col
+                <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex flex-col cursor-pointer">
+                     <MenuLink
+                        label='Log in'
+                        onClick={() => console.log('Click Button')}
+                     />
+                      <MenuLink
+                        label='Sign Up'
+                        onClick={() => console.log('Click Button')}
+                     />
+                </div>
+            )}
             
             {/* <DropdownMenu>
                     <DropdownMenuTrigger asChild>
