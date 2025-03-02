@@ -11,10 +11,12 @@ import { MessageSquare, ThumbsUp } from "lucide-react"
 const TrendingTopics =()=>{
 
     return (
+      <aside className="w-[470px] mt-0 p-6 col-span-1 rounded-xl border border-gray-300 shadow-xl">
+          
           <div className="flex items-center justify-between gap-10">
                 <Card>
                 <CardHeader>
-                    <CardTitle className="flrx item-center">Trending Topics</CardTitle>
+                    <CardTitle className="text-center">Trending Topics</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
@@ -38,6 +40,7 @@ const TrendingTopics =()=>{
                 </CardContent>
                 </Card>
         </div>
+        </aside>
       )
     }
     

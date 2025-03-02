@@ -21,7 +21,7 @@ const ReservationSideBar =()=>{
                 </div>
                 {/* for rental amount reservation and each person x the total person */}
                 {/* we can create button with this for selected input in future */}
-                <div className="w-full text-center font-bold mb-3 py-3 bg-airbnb hover:bg-airbnb-dark rounded-xl">
+                <div className="w-full text-center font-bold mb-3 py-3 bg-red-500 hover:bg-airbnb-dark rounded-xl">
                     Book
                     </div>
 
