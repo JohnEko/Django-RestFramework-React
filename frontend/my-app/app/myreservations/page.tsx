@@ -31,7 +31,7 @@ const MyReservationPage = () =>{
                         <p className="space-y-2"><strong>Number of nigth:</strong> 40</p>
                         <p className="space-y-2"><strong>Total price:</strong> $800</p>
 
-                        <div className="mt-6 inline-block cursor-pointer py-4 px-6 bg-airbnb text-gray font-bold rounded-xl">My Reservation</div>
+                        <div className="mt-6 inline-block cursor-pointer py-4 px-6 bg-red-500 text-gray font-bold rounded-xl">My Reservation</div>
                     </div>
 
                     
@@ -59,7 +59,7 @@ const MyReservationPage = () =>{
                         <p className="space-y-2"><strong>Number of nigth:</strong> 40</p>
                         <p className="space-y-2"><strong>Total price:</strong> $800</p>
 
-                        <div className="mt-6 inline-block cursor-pointer py-4 px-6 bg-airbnb text-gray font-bold rounded-xl">My Reservation</div>
+                        <div className="mt-6 inline-block cursor-pointer py-4 px-6 bg-red-500 text-gray font-bold rounded-xl">My Reservation</div>
                     </div>             
                 </div>
                 

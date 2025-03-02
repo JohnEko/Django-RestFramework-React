@@ -3,7 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import Headers from "./components/Navbar/Headers";
-import Modal from "./components/modals/modals";
+import Modal from "./components/modals/Modals";
+import LoginModal from "./components/modals/Login";
+import SignUpModal from "./components/modals/SignUpModal";
+
+
 
 
 const geistSans = Geist({
@@ -26,6 +30,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+// WE USE THIS FUNCTION TO ADD CONTENT ON THE PAGE
+  const content = (
+    <p>page Content is here </p>
+  
+  )
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -38,8 +47,14 @@ export default function RootLayout({
         <div className="pt-32">
         {children}
         </div>
-
-        <Modal />
+{/* we will do some testing on this when we are working with the backend login  */}
+        {/* <Modal 
+        label='Modaltest'
+        content={content}
+        isOpen={false}
+        /> */}
+        <LoginModal />
+        <SignUpModal />
       </body>
     </html>
   );
