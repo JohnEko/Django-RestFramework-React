@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -12,10 +13,10 @@ from .serializers import PostSerializer, CategorySerializer, CommentSerializer
 @api_view(['GET'])
 @authentication_classes([])
 @permission_classes([])
-def home_list(request):
+def property_list(request):
     post =Post.objects.all()
     serializer = PostSerializer(post, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+    return JsonResponse({'data' :serializer.data})
 
 
 
