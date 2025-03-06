@@ -1,10 +1,10 @@
 from django.urls import path
-from . import views
+from . import api
 
 
 
 urlpatterns = [
-    path('home/', views.home_list, name='home'),
+    path('', api.property_list, name='api_properties_list')
     # path('home/', views.HomListAPIViews.as_view(), name='home'),
     # path('news/<slug:slug>/', views.NewsDetailAPIView.as_view(), name='news'),
     # path('create/', views.PostToCreateAPIView.as_view(), name='create'),

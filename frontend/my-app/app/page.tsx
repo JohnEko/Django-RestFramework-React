@@ -2,9 +2,15 @@ import Image from "next/image";
 import TrendingTopics from "./components/TrendingTopics";
 import Categories from "./components/Categories";
 import PropertyList from "./components/property/PropertyList";
+
 import PropertyListItem from "./components/property/PropertyListItem";
 
+
+
+   
+
 const Home = () => {
+  
   // Import it to the homepage for user to see all categories or topics
   return (
     // Make the categories and the logo or link in the navbar same line
@@ -18,6 +24,7 @@ const Home = () => {
         </div>
         
         {/* <TrendingTopics /> */}
+        
         
       </main>
    

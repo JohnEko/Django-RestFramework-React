@@ -2,10 +2,11 @@
 
 services:
   web:
-    build: /mnt/c/Users/T540p/Desktop/amebo/amebo
+    build: /home/amebo/amebo
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./amebo/amebo/:/usr/src/amebo/amebo/
+      - .:/code
     ports:
       - 8000:8000
       # this file create is you are in dev or prod and ur secret keys

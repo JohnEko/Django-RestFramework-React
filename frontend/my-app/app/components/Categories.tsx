@@ -31,7 +31,7 @@ const Categories = () =>{
                 <span className="text-xs font-semibold">Sports</span>
             </div>
 
-            <div className="pb-4 flex-col items-center space-y-2 border-b-2 border-white opacity-60 hover:vorder-gray-200 hover:opacity-100">
+            <div className="pb-4 flex-col items-center space-y-2 border-b-2 border-white opacity-60 hover:horder-gray-200 hover:opacity-100">
                 <Image
                 src="/bnb.jpg"
                 alt="Beach_house"
@@ -43,7 +43,7 @@ const Categories = () =>{
                 <span className="text-xs font-semibold">News</span>
             </div>
 
-            <div className="pb-4 flex-col items-center space-y-2 border-b-2 border-white opacity-60 hover:vorder-gray-200 hover:opacity-100">
+            <div className="pb-4 flex-col items-center space-y-2 border-b-2 border-white opacity-60 hover:horder-gray-200 hover:opacity-100">
                 <Image
                 src="/bnb.jpg"
                 alt="Beach_house"
