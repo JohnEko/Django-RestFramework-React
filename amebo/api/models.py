@@ -71,7 +71,7 @@ class Post(models.Model):
     content = models.TextField(blank=True, null=True)
     slug=models.SlugField(max_length=250, null=True, blank=True)
     participants =models.ManyToManyField(User, related_name='participants', blank=True)
-    image = models.ImageField(upload_to='post_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='post/images', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
