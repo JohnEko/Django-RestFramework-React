@@ -7,14 +7,15 @@ import { URL } from "url";
 
 export type PropertyType ={
     id:string;
+    title: string;
+    category:string
 }
 
 const PropertyList = () =>{
+    //lets create a list of the properties and usestate to get property type
     const [peoperties, setProperties] = useState<PropertyType[]>([]);
     // this will be asyn function
     const getProperties = async () =>{
-       
-   
         //get our url from the backend
         const url = 'http://localhost:8000/api/properties';
         await fetch(url, {
@@ -41,9 +42,18 @@ const PropertyList = () =>{
 
     return(
         <>
-            <PropertyListItem />
-            <PropertyListItem />
-            <PropertyListItem />
+        {/* Lets loop throw the properties  */}
+            {peoperties.map((property) =>{
+
+                return(
+                    <PropertyListItem 
+                        key={property.id}
+                        property={property}
+                    />
+
+                )
+
+            })}
         </>
     )
 }

@@ -1,7 +1,13 @@
 import Image from "next/image"
+import { PropertyType } from "./PropertyList"
 
+interface PropertyProps {
+    property: PropertyType
+}
 
-const PropertyListItem = () =>{
+const PropertyListItem:React.FC<PropertyProps> = ({
+    property
+}) =>{
 
     return(
         <div className="cursor-pointer">
@@ -19,12 +25,12 @@ const PropertyListItem = () =>{
             </div>
 
             <div className="mt-2">
-            <p className="text-lg font-bold">Product name</p>
+            <p className="text-lg font-bold">{property.title}</p>
 
             </div>
 
             <div className="mt-2">
-                <p className="text-sm text-gray-700"><strong>$50</strong>per Item</p>
+                <p className="text-sm text-gray-700"><strong>{property.category}</strong>per Item</p>
 
             </div>
         </div>
