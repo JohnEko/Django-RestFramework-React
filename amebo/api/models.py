@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy
 
 # Create your models here.
 class CustomUserManager(UserManager):
-    def create_superuser(self, email, user_name, first_name, password, **other_fields):
+    def create_superuser(self, email, name, password, **other_fields):
 
         other_fields.setdefault('is_staff',True)
         other_fields.setdefault('is_superuser',True)
@@ -22,37 +22,43 @@ class CustomUserManager(UserManager):
         if other_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, user_name, first_name, password, **other_fields)
+        return self.create_user(email, name, password, **other_fields)
 
-    def create_user(self, email, user_name, first_name, password, **other_fields):
+    def create_user(self, email, name, password, **other_fields):
   
       if not email:  
         raise ValueError(('You must provide an email address'))
 
       email = self.normalize_email(email)
-      user = self.model(email=email, user_name=user_name,
-                        first_name=first_name, **other_fields)
+      user = self.model(email=email, 
+                        name=name,
+                        **other_fields)
       user.set_password(password)
       user.save()
       return user
     
 class User (AbstractBaseUser, PermissionsMixin):
-
+  id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
   email = models.EmailField(('email address'), unique=True)
-  user_name = models.CharField(max_length=150, unique=True)
-  first_name = models.CharField(max_length=150)
-  start_date = models.DateTimeField(default=timezone.now)
+  name = models.CharField(max_length=150, blank=True, null=True)
+  avatar=models.ImageField(upload_to='upload/avatar')
   about = models.TextField(('about'), max_length=500, blank=True)
+
   is_staff = models.BooleanField(default=False)
-  is_active = models.BooleanField(default=False)
+  is_active = models.BooleanField(default=True)
+
+  start_date = models.DateTimeField(default=timezone.now)
+  date_joined=models.DateTimeField(auto_now_add=True)
+  last_joined=models.DateTimeField(blank=True, null=True)
 
   objects = CustomUserManager()
 
   USERNAME_FIELD = 'email'
-  REQUIRED_FIELDS = ['user_name', 'first_name']
+  EMAILNAME_FIELD = 'email'
+  REQUIRED_FIELDS = ['name',]
 
-  def __str__(self):
-    return self.user_name
+#   def __str__(self):
+#     return self.user_name
 
 
 

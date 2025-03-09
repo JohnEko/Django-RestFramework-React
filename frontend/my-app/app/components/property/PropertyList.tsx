@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react"
 import PropertyListItem from "./PropertyListItem"
+import apiService from "@/app/services/apiService";
+
 import { URL } from "url";
+import { resolve } from "path";
+import { json } from "stream/consumers";
 
 
 export type PropertyType ={
@@ -13,29 +17,15 @@ export type PropertyType ={
 
 const PropertyList = () =>{
     //lets create a list of the properties and usestate to get property type
-    const [peoperties, setProperties] = useState<PropertyType[]>([]);
+    const [properties, setProperties] = useState<PropertyType[]>([]);
     // this will be asyn function
     const getProperties = async () =>{
-        //get our url from the backend
-        const url = 'http://localhost:8000/api/properties';
-        await fetch(url, {
-            method:'GET',
-            
-        })
-            .then(response => response.json())
-           
-            .then((json) => {
-                console.log('json', json);
-
-                setProperties(json.data)
-            })
-            .catch((error) => {
-                console.log('error', error);
-            });
-
+        //get our url from service.apiServicethe backend
+        const tmpProperty = await apiService.get('/api/properties/')
+        setProperties(tmpProperty.data)
     };
-
     //this is a function we will create a asyncronize function above
+    //this will load only when the page is loaded
     useEffect(() => {
         getProperties();
     }, []);
@@ -43,16 +33,14 @@ const PropertyList = () =>{
     return(
         <>
         {/* Lets loop throw the properties  */}
-            {peoperties.map((property) =>{
+            {properties.map((property) =>{
 
                 return(
                     <PropertyListItem 
                         key={property.id}
                         property={property}
                     />
-
                 )
-
             })}
         </>
     )
