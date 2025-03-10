@@ -8,6 +8,7 @@ import CustomeButton from "../forms/CustomeButton"
 import { error } from "console"
 import apiService from "@/app/services/apiService"
 import { unique } from "next/dist/build/utils"
+import { handleLogin } from "@/app/lib/actions"
 
 const SignUpModal =()=>{
     //variable
@@ -29,7 +30,7 @@ const SignUpModal =()=>{
         const response = await apiService.post('/api/auth/register/', JSON.stringify(forData));
 
         if (response.access) {
-            //handle Login
+            handleLogin(response.user.pk, response.access, response.refresh);
 
 
             signUpModal.close()

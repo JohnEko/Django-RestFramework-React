@@ -12,7 +12,7 @@ from . import api
 urlpatterns = [
     # This can be created in useraccount app for bigger projects
     path('auth/register/', RegisterView.as_view(), name='register'),
-    path('login/', LoginView.as_view(), name='rest_login'),
+    path('auth/login/', LoginView.as_view(), name='rest_login'),
     path('logout/', LogoutView.as_view(), name='rest_logout'),
 
     path('properties/', api.property_list, name='api_properties_list'),
