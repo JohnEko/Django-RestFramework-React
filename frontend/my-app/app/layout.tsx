@@ -6,6 +6,7 @@ import Headers from "./components/Navbar/Headers";
 import Modal from "./components/modals/Modals";
 import LoginModal from "./components/modals/Login";
 import SignUpModal from "./components/modals/SignUpModal";
+import AddPropertyModal from "./components/modals/AddPropertyModal";
 
 
 
@@ -55,6 +56,7 @@ export default function RootLayout({
         /> */}
         <LoginModal />
         <SignUpModal />
+        <AddPropertyModal />
       </body>
     </html>
   );

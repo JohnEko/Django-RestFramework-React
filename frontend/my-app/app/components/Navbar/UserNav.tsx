@@ -1,22 +1,22 @@
-'user client'
-import { useState } from "react";
+'use client';
+import React, { useState } from "react";
 import UserLoginModal from "@/app/hooks/useLoginModal";
 import UseSignUpModal from "@/app/hooks/UseSignUpModal";
-import { Button } from "@/components/ui/button";
-import { Menu } from "lucide-react";
-import Image from "next/image";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+import LogoutButton from "../LogoutButton";
+// import { Button } from "@/components/ui/button";
+// import { Menu } from "lucide-react";
+// import Image from "next/image";
+
 import MenuLink from "./MenuLink";
 
-const UserNav = () => {
+interface UserNavProps {
+    userId?: string | null;
+}
+// let the function no this is coming from react
+const UserNav: React.FC<UserNavProps> = ({
+//parse in the userid so we can use it below
+    userId
+}) => {
     const loginModal = UserLoginModal()
     const signUpModal = UseSignUpModal()
     // using this function for our dropdown
@@ -42,47 +42,33 @@ const UserNav = () => {
             {(isOpen &&
             // make the button below each other flex flex-col
                 <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex flex-col cursor-pointer">
-                      <MenuLink
-                        label='Log in'
-                        onClick={() =>{
-                            setIsOpen(false)
-                            loginModal.open()
-                        }}
-                     />
+                      {/* lets check is user is login so they cannot see the signin and login button  */}
+                      {userId ?(
 
-                        <MenuLink
-                        label='Sign up'
-                        onClick={() =>{
-                            setIsOpen(false)
-                            signUpModal.open()
-                        }}
-                     />
+                        <LogoutButton />
+                      ) : (
+                      
+                      <>   
+                            <MenuLink
+                                label='Log in'
+                                onClick={() =>{
+                                    setIsOpen(false)
+                                    loginModal.open()
+                                }}
+                            />
+
+                                <MenuLink
+                                label='Sign up'
+                                onClick={() =>{
+                                    setIsOpen(false)
+                                    signUpModal.open()
+                                }}
+                            />
+                        </>
+                    )}
                 </div>
             )}
             
-            {/* <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="">
-                        <Menu className="h-5 w-5" />
-                        <span className="sr-only">Toggle menu</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-56" align="end">
-                        <DropdownMenuLabel>Navigation</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                        <DropdownMenuItem>Featured</DropdownMenuItem>
-                        <DropdownMenuItem>Trending</DropdownMenuItem>
-                        <DropdownMenuItem>Recent</DropdownMenuItem>
-                        </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                        <DropdownMenuItem>Sign In</DropdownMenuItem>
-                        <DropdownMenuItem>Register</DropdownMenuItem>
-                        </DropdownMenuGroup>
-                    </DropdownMenuContent>
-            </DropdownMenu> */}
-                   
         </div>
     )
 }

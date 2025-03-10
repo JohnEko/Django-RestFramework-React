@@ -15,6 +15,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", default=0))
 
+
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOST").split(" ")
 
 # make sure we using this model as a default model
@@ -26,6 +27,7 @@ AUTH_USER_MODEL = 'api.User'
 SITE_ID = 1
 
 WEBSITE_URL = 'HTTP:localhost:8000',
+# djangorestframework-simplejwt
 SIMPLE_JWT ={ 
                 "ACCESS_TOKEN_LIFETIME":timedelta(minutes=60),
 		        "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -44,10 +46,10 @@ ACCOUNT_EMAIL_VERIFICATION =None
 
 REST_FRAMEWORK = {
 
-# 		'DEFAULT_AUTHENTICATION_CLASSES' : (
+		'DEFAULT_AUTHENTICATION_CLASSES' : (
 
-# 			'rest_framework_simplejwt.authentication.JWTAuthentication',
-# ),
+			'rest_framework_simplejwt.authentication.JWTAuthentication',
+),
 		'DEFAULT_PERMISSION_CLASSES' : (
 
 			'rest_framework.permissions.IsAuthenticated',
