@@ -1,12 +1,28 @@
 'use client'
 
+import UserLoginModal from "@/app/hooks/useLoginModal"
 import useAddPropertyModal from "@/app/hooks/useAddPropertyModal"
 import AddPropertyModal from "../modals/AddPropertyModal"
+import React from "react";
 
-const AddPropertyButton = () =>{
+//we need to add login modal so user need to be login user
+interface AddPropertyButtonProps{
+    userId?: string | null;
+}
+
+//making it to be use react function
+const AddPropertyButton: React.FC<AddPropertyButtonProps> = ({
+    userId
+}) =>{
+    const loginModal = UserLoginModal();
     const addPropertyModal = useAddPropertyModal()
+
     const airbnbYourHome = () => {
-        addPropertyModal.open()
+        if (userId){
+            addPropertyModal.open()
+        }else{
+            loginModal.open()
+        }
     }
     // we need to create space for this
     //this is the icon on the left side
