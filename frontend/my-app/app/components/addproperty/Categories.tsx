@@ -1,14 +1,14 @@
 //lets build an interface to set categories
 import Image from "next/image";
 
-interface CategoriesProps{
+interface CategoriesProps {
     dataCategory: string;
     setCategory: (category: string) => void;
 } 
 
-const Categories: React.FC<CategoriesProps> = ({
+const Categories: React.FC<CategoriesProps> =  ({
     dataCategory,
-    setCategory
+    setCategory 
 }) =>{
 
     return(
