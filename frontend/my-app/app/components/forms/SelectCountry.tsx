@@ -1,9 +1,7 @@
 'use client';
 
-import Select, { GroupBase, OptionsOrGroups } from "react-select";
+import Select from "react-select";
 import useCountries from "@/app/hooks/useCountries";
-
-
 
 export type SelectCountryValue = {
     label: string;
@@ -19,9 +17,9 @@ const SelectCountry: React.FC<SelectCountryProps> = ({
     value,
     onChange
 }) =>{
-   
-    const {getAll} = useCountries()
-    return(
+
+    const {getAll}: any =  useCountries();
+    return (
         <>
             <Select
                 isClearable
