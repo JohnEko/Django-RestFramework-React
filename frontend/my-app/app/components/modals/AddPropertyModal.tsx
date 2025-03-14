@@ -2,13 +2,15 @@
 
 
 import Image from "next/image"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 // import LoginModal from "./Login"
 import Modal from "./Modals"
 import CustomeButton from "../forms/CustomeButton"
 import Categories from "../Categories"
 import useAddPropertyModal from "@/app/hooks/useAddPropertyModal";
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry"
+import apiService from "@/app/services/apiService"
+import { useRouter } from "next/navigation"
 
 
 
@@ -25,11 +27,12 @@ const AddPropertyModal = () => {
     const [dataBedrooms, setDataBedrooms] = useState('');
     const [dataGuests, setDataGuests] = useState('');
     const [dataCountry, setDataCountry] = useState<SelectCountryValue>();
+    const [dataImage, setDataImage] = useState<File | null>(null);
 
 
 
 
-
+    const router = useRouter();
 
 //also we can use this to organized our comments sections
     const addPropertyModal = useAddPropertyModal();
@@ -38,6 +41,52 @@ const AddPropertyModal = () => {
     const setCategory = (category: string) => {
         setDataCategory(category)
     }
+//set the image event want to upload
+    const setImage = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const tmpImage = event.target.files[0]
+
+            setDataImage(tmpImage);
+        }
+    }
+
+    //let create a submit button to submit the image to the server lets make it async
+    const submitForm = async () =>{
+        console.log(submitForm);
+        //lets make the valid input
+        if (dataTitle && 
+            dataCategory &&
+            dataDescription &&
+            dataPrice &&
+            dataCountry &&
+            dataImage
+        ){
+            //lets use inbuild javascript form
+            const formData = new FormData()
+            formData.append('title', dataTitle)
+            formData.append('category', dataCategory)
+            formData.append('description', dataDescription)
+            formData.append('price', dataPrice)
+            formData.append('country', dataCountry.label)
+            formData.append('country', dataCountry.value)
+            formData.append('guest', dataGuests)
+            formData.append('bathroom', dataBathrooms)
+            formData.append('image', dataImage)
+
+            //parse the fordata to the apibackend
+            const response = await apiService.post('/api/properties/create/', formData)
+
+            if (response.success) {
+                console.log('SUCCESS :-D');
+
+                router.push('/')
+            }else {
+                console.log('Error: there is an error on your image file')
+            }
+
+        }
+    }
+
 
 //using next if statement to check the steps we are the if statement is ?()
     const content = (
@@ -173,20 +222,60 @@ const AddPropertyModal = () => {
                     <CustomeButton 
                             label="Previous"
                             className="mb-2 bg-black hover:bg-gray-800"
-                            onClick={() => setCurrentStep(2)}
+                            onClick={() => setCurrentStep(3)}
                         
                     />
 
                     <CustomeButton 
                             label="Next"
-                            onClick={() => setCurrentStep(4)}
+                            onClick={() => setCurrentStep(5)}
                         
                     />
 
                 </>
             
             ) : (
-                <p>this</p>
+                <>
+                    <h2 className="mb-6 text-2xl">Image</h2>
+                    <div className="pt-3 pb-6 space-y-4">
+                        <div className="py-4 px-6 bg-gray-600 text-white rounded-xl">
+                            <input 
+                                type="file"
+                                accept="image/*"
+                                onChange={setImage} 
+                                />
+
+                        </div>
+
+                        {/* // want to upload image */}
+                        {dataImage && (
+                            <div className="w-[200px] h-[150px] relative">
+                                <Image 
+                                    fill
+                                    alt="upload image"
+                                    src={URL.createObjectURL(dataImage)}
+                                    className="w-full h-full object-cover rounded-xl"
+                                />
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                    <CustomeButton 
+                            label="Previous"
+                            className="mb-2 bg-black hover:bg-gray-800"
+                            onClick={() => setCurrentStep(4)}
+                        
+                    />
+
+                    <CustomeButton 
+                            label="Submit"
+                            onClick={() => console.log("Submit")}
+                        
+                    />
+                </>
             )}
         </>
     )

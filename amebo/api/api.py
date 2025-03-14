@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
 from .models import Category, Post, Comment
+from .forms import PostForm
 from .serializers import PostSerializer, CategorySerializer, CommentSerializer
 
 # Create your views here.
