@@ -3,9 +3,9 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
-from .models import Category, Post, Comment
-from .forms import PostForm
-from .serializers import PostSerializer, CategorySerializer, CommentSerializer
+from .models import Category, Post, Comment, Property
+from .forms import PostForm, PropertyForm
+from .serializers import PostSerializer, CategorySerializer, CommentSerializer, PropertiesSerializer
 
 # Create your views here.
 
@@ -15,9 +15,25 @@ from .serializers import PostSerializer, CategorySerializer, CommentSerializer
 @authentication_classes([])
 @permission_classes([])
 def property_list(request):
-    post =Post.objects.all()
-    serializer = PostSerializer(post, many=True)
-    return JsonResponse({'data' :serializer.data})
+    properties = Property.objects.all()
+    serializer = PropertiesSerializer(properties, many=True)
+    return JsonResponse({'data' : serializer.data})
+
+@api_view(['POST', 'FILES'])
+def create_property(request):
+    form = PropertyForm(request.POST, request.FILES)
+    if form.is_valid():
+        property=form.save(commit=False)
+        # let check if user is authenticate
+        property.landlord = request.user
+        property.save
+
+        return JsonResponse({'success' : True})
+    
+    else:
+        print('error', form.errors, form.non_fields_error)
+        return JsonResponse({'errors': form.errors.as_json()}, status=400)
+        
 
 
 
