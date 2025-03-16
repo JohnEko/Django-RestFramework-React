@@ -7,6 +7,7 @@ interface CategoriesProps {
 } 
 
 const Categories: React.FC<CategoriesProps> =  ({
+    
     dataCategory,
     setCategory 
 }) =>{

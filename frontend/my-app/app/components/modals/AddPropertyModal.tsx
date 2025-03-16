@@ -11,6 +11,7 @@ import useAddPropertyModal from "@/app/hooks/useAddPropertyModal";
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry"
 import apiService from "@/app/services/apiService"
 import { useRouter } from "next/navigation"
+import { error } from "console"
 
 
 
@@ -19,6 +20,7 @@ const AddPropertyModal = () => {
     //
     //States
     const [currentStep, setCurrentStep] = useState(1);
+    const [errors, setErrors] = useState<string[]>([]);
     const [dataCategory, setDataCategory] = useState('');
     const [dataTitle, setDataTitle] = useState('');
     const [dataDescription, setDataDescription] = useState('');
@@ -32,10 +34,11 @@ const AddPropertyModal = () => {
 
 
 
-    const router = useRouter();
+    
 
 //also we can use this to organized our comments sections
     const addPropertyModal = useAddPropertyModal();
+    const router = useRouter();
     //
     //set data expecting string data 
     const setCategory = (category: string) => {
@@ -44,7 +47,7 @@ const AddPropertyModal = () => {
 //set the image event want to upload
     const setImage = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
-            const tmpImage = event.target.files[0]
+            const tmpImage = event.target.files[0];
 
             setDataImage(tmpImage);
         }
@@ -52,25 +55,27 @@ const AddPropertyModal = () => {
 
     //let create a submit button to submit the image to the server lets make it async
     const submitForm = async () =>{
-        console.log(submitForm);
+        console.log('submitForm');
         //lets make the valid input
-        if (dataTitle && 
+        if (
             dataCategory &&
+            dataTitle && 
             dataDescription &&
             dataPrice &&
             dataCountry &&
             dataImage
-        ){
+        ) {
             //lets use inbuild javascript form
             const formData = new FormData()
-            formData.append('title', dataTitle)
             formData.append('category', dataCategory)
+            formData.append('title', dataTitle)
             formData.append('description', dataDescription)
             formData.append('price', dataPrice)
+            formData.append('bedrooms', dataBedrooms)
+            formData.append('bathrooms', dataBathrooms)
+            formData.append('guests', dataGuests)
             formData.append('country', dataCountry.label)
-            formData.append('country', dataCountry.value)
-            formData.append('guest', dataGuests)
-            formData.append('bathroom', dataBathrooms)
+            formData.append('country_code', dataCountry.value)
             formData.append('image', dataImage)
 
             //parse the fordata to the apibackend
@@ -80,8 +85,14 @@ const AddPropertyModal = () => {
                 console.log('SUCCESS :-D');
 
                 router.push('/')
+                addPropertyModal.close()
             }else {
                 console.log('Error: there is an error on your image file')
+                    //when we encounter error message we print the vslue
+                const tmpErrors: string[] = Object.values(response).map((error: any) => {
+                    return error
+                }) 
+                setErrors(tmpErrors)
             }
 
         }
@@ -94,7 +105,7 @@ const AddPropertyModal = () => {
             {currentStep == 1? (
                     <>
                         <h2 className="mb-6 text-2xl">Choose category</h2>
-                        //comeback for this error
+                        {/* //comeback for this error */}
                         <Categories
                             dataCategory ={dataCategory}
                             setCategory={(category: string) => setCategory(category)}   
@@ -136,7 +147,7 @@ const AddPropertyModal = () => {
 
                      <CustomeButton 
                             label="Previous"
-                            className="mb-2 bg-black hover:bg-gray-800"
+                            className="mb-2 bg-black-500 hover:bg-gray-800"
                             onClick={() => setCurrentStep(2)}
                         
                     />
@@ -195,7 +206,7 @@ const AddPropertyModal = () => {
                     </div>
                     <CustomeButton 
                             label="Previous"
-                            className="mb-2 bg-black hover:bg-gray-800"
+                            className="mb-2 bg-black-500 hover:bg-gray-800"
                             onClick={() => setCurrentStep(2)}
                         
                     />
@@ -221,7 +232,7 @@ const AddPropertyModal = () => {
 
                     <CustomeButton 
                             label="Previous"
-                            className="mb-2 bg-black hover:bg-gray-800"
+                            className="mb-2 bg-black-500 hover:bg-gray-800"
                             onClick={() => setCurrentStep(3)}
                         
                     />
@@ -262,17 +273,29 @@ const AddPropertyModal = () => {
                         )}
 
                     </div>
+                        {/* //lets loop through the errors and print it out*/}
+                    {errors.map((error, index) => {
+                        return(
+                            <div
+                                key={index}
+                                className="p-5 mb-4 bg-red-400 tect-white rounded-xl opacity-80"
+                            >
+                                {error}
 
+                            </div>
+                        )
+
+                    })}
                     <CustomeButton 
                             label="Previous"
-                            className="mb-2 bg-black hover:bg-gray-800"
+                            className="mb-2 bg-black-500 hover:bg-gray-800"
                             onClick={() => setCurrentStep(4)}
                         
                     />
 
                     <CustomeButton 
                             label="Submit"
-                            onClick={() => console.log("Submit")}
+                            onClick={submitForm}
                         
                     />
                 </>

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Category, Comment
+from .models import Post, Category, Comment, Property
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -18,3 +18,9 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
         # filds = ["id", "title", "content", "published_date"]
+
+
+class PropertiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Property
+        fields = '__all__'
