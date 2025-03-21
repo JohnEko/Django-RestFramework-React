@@ -1,92 +1,82 @@
 import { getAccessToken } from "../lib/actions";
-import { rejects } from "assert";
-import { resolve } from "path";
-import { json } from "stream/consumers";
 
-
-const apiService ={
-
-    get: async function (url: string): Promise<any>{
+const apiService = {
+    get: async function (url: string): Promise<any> {
         console.log('get', url);
-        const token = getAccessToken();
 
-        return new Promise((resolve, rejects) => {
-            // THIS IS THE BACKEND URI FOR THE API FILE
+        const token = await getAccessToken();
+
+        return new Promise((resolve, reject) => {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearere ${token}`
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(response => response.json())
-                .then((json) =>{
-                    console.log('Response:', json)
+                .then((json) => {
+                    
+                    console.log('Response:', json);
 
-                    resolve(json)
+                    resolve(json);
                 })
-                .catch((error) => {
-                    rejects(error)
-                })
+                .catch((error => {
+                    reject(error);
+                }))
         })
-        
     },
-    post: async function(url: string, data: any): Promise<any> {
-        console.log('post', url, data)
-        const token = getAccessToken();
 
-        return new Promise((resolve, rejects) => {
-            // THIS IS THE BACKEND URI FOR THE API FILE
+    post: async function(url: string, data: any): Promise<any> {
+        console.log('post', url, data);
+
+        const token = await getAccessToken();
+
+        return new Promise((resolve, reject) => {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
                 method: 'POST',
                 body: data,
                 headers: {
-                    'Authorization': `Bearere ${token}`
+                    
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(response => response.json())
-                .then((json) =>{
-                    console.log('Response:', json)
+                .then((json) => {
+                    console.log('Response:', json);
 
-                    resolve(json)
+                    resolve(json);
                 })
-                .catch((error) => {
-                    rejects(error)
-                })
+                .catch((error => {
+                    reject(error);
+                }))
         })
-        
-        
     },
-    postWithOutToken: async function(url: string, data: any): Promise<any> {
-        console.log('post', url, data)
-       
 
-        return new Promise((resolve, rejects) => {
-            // THIS IS THE BACKEND URI FOR THE API FILE
+    postWithoutToken: async function(url: string, data: any): Promise<any> {
+        console.log('post', url, data);
+
+        return new Promise((resolve, reject) => {
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
                 method: 'POST',
                 body: data,
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                   
+                    'Content-Type': 'application/json'
                 }
             })
                 .then(response => response.json())
-                .then((json) =>{
-                    console.log('Response:', json)
+                .then((json) => {
+                    console.log('Response:', json);
 
-                    resolve(json)
+                    resolve(json);
                 })
-                .catch((error) => {
-                    rejects(error)
-                })
+                .catch((error => {
+                    reject(error);
+                }))
         })
-        
-        
     }
-
-
 }
-export default apiService
+
+export default apiService;

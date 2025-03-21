@@ -16,7 +16,9 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='rest_logout'),
 
     path('properties/', api.property_list, name='api_properties_list'),
-    path('properties/create/', api.create_property, name='api_ctreate_property' )
+    path('properties/create/', api.create_property, name='api_ctreate_property'),
+    path('properties/<uuid:pk>/', api.property_detail, name='api_property_detail'),
+
     # path('home/', views.HomListAPIViews.as_view(), name='home'),
     # path('news/<slug:slug>/', views.NewsDetailAPIView.as_view(), name='news'),
     # path('create/', views.PostToCreateAPIView.as_view(), name='create'),

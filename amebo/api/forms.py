@@ -1,16 +1,28 @@
-from django.forms import ModelForm
+from django import forms 
 
 from .models import Post, Property
 
 
-class PostForm(ModelForm):
+class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = '__all__'
 
-class PropertyForm(ModelForm):
+class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = '__all__'
-     
-        # fileds = ['id', 'title', 'description','price_per_night', 'bedrooms','guest', 'country', 'country_code', 'Image', 'landlord', 'created_at' ]
+        fields = (
+                    'title', 
+                    'description',
+                    'price_per_night', 
+                    'bedrooms', 
+                    'bathrooms', 
+                    'guests', 
+                    'country', 
+                    'country_code', 
+                    'category',
+                    'image',
+                )
+
+
+        # fileds = ('title', 'description','price_per_night', 'bedrooms', 'bathrooms', 'guest', 'country', 'country_code', 'category', 'Image' )

@@ -1,5 +1,6 @@
-from rest_framework import serializers
-from .models import Post, Category, Comment, Property
+from rest_framework import serializers 
+from django.core import serializers as core_serializers
+from .models import Post, Category, Comment, Property, User
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -23,4 +24,20 @@ class CommentSerializer(serializers.ModelSerializer):
 class PropertiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
-        fields = '__all__'
+        fields =  ('id', 'title', 'description','price_per_night', 'image','bedrooms', 'bathrooms', 'guests', 'landlord')
+
+# Propertydetailserializer inherite from userdetail so we can get the landlord
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'name', 'avatar_url')
+
+
+class PropertyDetailSerializer(serializers.ModelSerializer):
+    landlord = UserDetailSerializer(read_only=True, many=False)
+    class Meta:
+        model = Property
+        fields = ('id', 'title', 'description','price_per_night', 'image','bedrooms', 'bathrooms', 'guests', 'landlord')
+
+
+
