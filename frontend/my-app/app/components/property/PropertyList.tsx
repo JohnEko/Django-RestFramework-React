@@ -1,5 +1,6 @@
 'use client';
 
+import Image from "next/image";
 import { useEffect, useState } from "react"
 import PropertyListItem from "./PropertyListItem"
 import apiService from "@/app/services/apiService";
@@ -13,6 +14,7 @@ export type PropertyType ={
     id:string;
     title: string;
     category:string
+    image:string
 }
 
 const PropertyList = () =>{

@@ -4,7 +4,7 @@ import Modal from "./Modals"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import UseSignUpModal from "@/app/hooks/UseSignUpModal"
-import CustomeButton from "../forms/CustomeButton"
+import CustomeButton from "../forms/CustomButton"
 import { error } from "console"
 import apiService from "@/app/services/apiService"
 import { unique } from "next/dist/build/utils"
@@ -27,7 +27,7 @@ const SignUpModal =()=>{
             password1:password1,
             password2:password2
         }
-        const response = await apiService.postWithOutToken('/api/auth/register/', JSON.stringify(forData));
+        const response = await apiService.postWithoutToken('/api/auth/register/', JSON.stringify(forData));
 
         if (response.access) {
             handleLogin(response.user.pk, response.access, response.refresh);

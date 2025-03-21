@@ -1,7 +1,20 @@
+
 import Image from "next/image"
 import ReservationSideBar from "../ReservationSideBar"
  
- const ProperDetailsPage = () =>{
+import apiService from "@/app/services/apiService";
+import { stringify } from "node:querystring";
+import { PathParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
+import { parseAppSegmentConfig } from "next/dist/build/segment-config/app/app-segment-config";
+import { json } from "node:stream/consumers";
+import { parseArgs } from "node:util";
+
+// this params comes from the properties [id]
+
+const ProperDetailsPage = async ({params}: {params: {id: string}}) =>{
+    // parsing the id return a errors 
+    const property = await apiService.get(`/api/properties/${params.id}`)
+    
 
     return(
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
@@ -20,28 +33,31 @@ import ReservationSideBar from "../ReservationSideBar"
             
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div className="py-6 pr-6 col-span-3">
-                    <h3 className="mb-4 text-4xl">Details</h3>
+                    <h3 className="mb-4 text-4xl">{property.title}</h3>
 
                     <span className="mb-6 block text-lg text-gray-600">
-                        4 guest -2 bathroom -3 bedroom
+                    {property.guests} guest {property.bedrooms} bathroom {property.bathrooms} bedroom
                     </span>
                         <hr />
+
                     <div className="py-6 flex item-center space-x-4">
-                        <Image 
-                            src="/Jerry.jpg"
-                            width={50}
-                            height={50}
-                            className="rounded-full"
-                            alt="The user name"
-                        
-                        />
-                        <p><strong>Jame Simon</strong> is your Author and Host</p>
+                        {/* lets make an if statement here if the user have a image we show the url else no url */}
+                        {property.name && (
+                            <Image 
+                                src={property.landlord.avatar}
+                                width={50}
+                                height={50}
+                                className="rounded-full"
+                                alt="The user name"
+                            
+                            />
+                    )}
+                        <p><strong>{property.landlord.name}</strong> is your Host</p>
 
                     </div>
                     <hr />
                     <p className="mt-6 text-lg">
-                    Chelsea should be Lookman’s next home because the style of play suits what Enzo Maresca looks for in his strikers. He’s fast, technically gifted, can dribble, create chances and score a lot of goals. With all due respect, most 
-                    Chelsea strikers struggle to bring out two of those qualities.”
+                    {property.description}
                     </p>
                 </div>
 

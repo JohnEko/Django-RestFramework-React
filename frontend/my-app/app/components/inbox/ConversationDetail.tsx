@@ -1,7 +1,7 @@
 "use client"
 
 import { Label } from "@radix-ui/react-dropdown-menu"
-import CustomeButton from "../forms/CustomeButton"
+import CustomeButton from "../forms/CustomButton"
 
 const ConversationDetail =()=>{
 

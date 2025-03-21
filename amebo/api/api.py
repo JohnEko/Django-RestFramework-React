@@ -5,7 +5,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 from rest_framework import generics, status
 from .models import Category, Post, Comment, Property
 from .forms import PostForm, PropertyForm
-from .serializers import PostSerializer, CategorySerializer, CommentSerializer, PropertiesSerializer
+from .serializers import PostSerializer, CategorySerializer, CommentSerializer, PropertiesSerializer, PropertyDetailSerializer
 
 # Create your views here.
 
@@ -19,19 +19,33 @@ def property_list(request):
     serializer = PropertiesSerializer(properties, many=True)
     return JsonResponse({'data' : serializer.data})
 
+
+
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def property_detail(request, pk):
+    property = Property.objects.get(pk=pk)
+    serializer = PropertyDetailSerializer(property, many=False)
+
+    return JsonResponse(serializer.data)
+
+
+
 @api_view(['POST', 'FILES'])
 def create_property(request):
+    # I need to add the model here so form can get the property
     form = PropertyForm(request.POST, request.FILES)
     if form.is_valid():
         property=form.save(commit=False)
         # let check if user is authenticate
         property.landlord = request.user
-        property.save
+        property.save()
 
         return JsonResponse({'success' : True})
     
     else:
-        print('error', form.errors, form.non_fields_error)
+        print('Error', form.errors, form.non_field_errors)
         return JsonResponse({'errors': form.errors.as_json()}, status=400)
         
 

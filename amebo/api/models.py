@@ -57,8 +57,12 @@ class User (AbstractBaseUser, PermissionsMixin):
   EMAILNAME_FIELD = 'email'
   REQUIRED_FIELDS = ['name',]
 
-#   def __str__(self):
-#     return self.user_name
+# to get the user information
+  def avatar_url(self):
+      if self.avatar:
+         return f'{settings.WEBSITE_URL}{self.avatar.url}'
+      else:
+          return ""
 
 
 
@@ -121,15 +125,16 @@ class Property(models.Model):
     description = models.TextField()
     price_per_night = models.IntegerField()
     bedrooms = models.IntegerField()
-    guest = models.IntegerField()
+    bathrooms = models.IntegerField()
+    guests = models.IntegerField()
     country = models.CharField(max_length=255)
     country_code = models.CharField(max_length=10)
     category = models.CharField(max_length=255)
     #favourId
-    Image = models.ImageField(upload_to='uploads/properties')
+    image = models.ImageField(upload_to='uploads/properties', blank=True, null=True)
     landlord = models.ForeignKey(User, related_name='properties', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def Image_url(self):
-        return f'{settings.WEBSITE_URL}{self.Image.url}'
+        return f'{settings.WEBSITE_URL}{self.image.url}'
 
