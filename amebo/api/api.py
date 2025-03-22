@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
-from .models import Category, Post, Comment, Property
+from .models import Category, Post, Comment, Property, Reservation 
 from .forms import PostForm, PropertyForm
 from .serializers import PostSerializer, CategorySerializer, CommentSerializer, PropertiesSerializer, PropertyDetailSerializer
 
@@ -50,10 +50,31 @@ def create_property(request):
         
 
 
+@api_view(['POST'])
+def book_property(request, pk):
+    try:
+        start_date = request.POST.get('start_date', '')
+        end_date = request.POST.get('end_date', '')
+        number_of_night = request.POST.get('number_of_night', '')
+        total_price = request.POST.get('total_price', '')
+        guests = request.POST.get('guests', '')
 
+        property = Property.objects.get(pk=pk)
 
+        Reservation.objects.create(
+            property=property,
+            start_date=start_date,
+            number_of_night=number_of_night,
+            end_date=end_date,
+            total_price=total_price,
+            guests=guests,
+            created_by=request.user
+        )
 
+    except Exception as e:
+        print('Error', e)
 
+        return JsonResponse({'success': False})
 
 
 
