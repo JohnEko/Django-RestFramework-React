@@ -18,6 +18,7 @@ urlpatterns = [
     path('properties/', api.property_list, name='api_properties_list'),
     path('properties/create/', api.create_property, name='api_ctreate_property'),
     path('properties/<uuid:pk>/', api.property_detail, name='api_property_detail'),
+    path('properties/<uuid:pk>/book/', api.book_property, name='api_book_property'),
 
     # path('home/', views.HomListAPIViews.as_view(), name='home'),
     # path('news/<slug:slug>/', views.NewsDetailAPIView.as_view(), name='news'),

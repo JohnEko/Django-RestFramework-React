@@ -3,6 +3,7 @@ import Image from "next/image"
 import ReservationSideBar from "../ReservationSideBar"
  
 import apiService from "@/app/services/apiService";
+import { getUserId } from "@/app/lib/actions";
 import { stringify } from "node:querystring";
 import { PathParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 import { parseAppSegmentConfig } from "next/dist/build/segment-config/app/app-segment-config";
@@ -14,6 +15,7 @@ import { parseArgs } from "node:util";
 const ProperDetailsPage = async ({params}: {params: {id: string}}) =>{
     // parsing the id return a errors 
     const property = await apiService.get(`/api/properties/${params.id}`)
+    const userId  = await getUserId()
     
 
     return(
@@ -62,7 +64,10 @@ const ProperDetailsPage = async ({params}: {params: {id: string}}) =>{
                 </div>
 
                 <div>
-                    <ReservationSideBar />
+                    <ReservationSideBar 
+                    property={property}
+                    userId={userId}
+                    />
                     
 
                 </div>

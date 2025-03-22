@@ -138,3 +138,14 @@ class Property(models.Model):
     def Image_url(self):
         return f'{settings.WEBSITE_URL}{self.image.url}'
 
+
+class Reservation(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
+    property = models.ForeignKey(Property, related_name='reservation', on_delete=models.CASCADE)
+    start_date = models.IntegerField()
+    end_date = models.IntegerField()
+    number_of_night = models.IntegerField()
+    guests = models.IntegerField()
+    total_price = models.FloatField()
+    created_by = models.ForeignKey(User, related_name='reservation', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
