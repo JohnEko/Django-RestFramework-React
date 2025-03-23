@@ -1,7 +1,10 @@
-import Image from "next/image"
+
+import { getUserId } from "../lib/actions"
 import PropertyList from "../components/property/PropertyList"
 
-const Myproperties = () =>{
+const Myproperties = async () =>{
+
+    const userId = await getUserId();
 // can create a table row inside this box with different links or href tag
 // for smaller and lager devices  grid grid-col-1 md:grid-cols-4 gap-4
     return(
@@ -10,7 +13,9 @@ const Myproperties = () =>{
             <h1 className="my-6 text-2xl">My properties</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <PropertyList />
+                        <PropertyList 
+                            landlord_id={userId}
+                        />
             </div>
         </main>
 

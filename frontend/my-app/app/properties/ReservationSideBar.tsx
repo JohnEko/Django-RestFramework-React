@@ -11,6 +11,7 @@ import apiService from "../services/apiService";
 import UserLoginModal from "../hooks/useLoginModal";
 import { setPriority } from "os";
 import PropertyList from "../components/property/PropertyList";
+import { Console } from "console";
 
 
 const initiaDateRange = {
@@ -42,35 +43,35 @@ const ReservationSideBar: React.FC<ReservationSideBarProps> =({
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [dateRange, setDateRange] = useState<Range>(initiaDateRange);
     const [minDate, setMinDate] = useState<Date>(new Date());
+    const [bookeDates, setBookedDates] = useState<Date[]>([]);
     const [guests, setGuests] = useState<string>('1');
     const guestRange = Array.from({ length: property.guests}, (_, index) => index + 1)
 
 
-// creating when a guest is performing booking if user login
+    // creating when a guest is performing booking if user login
    const performBooking = async () =>{
+    console.log('performbooking', userId)
     if (userId){
         if (dateRange.startDate && dateRange.endDate){
-            const formdata = new FormData();
-            formdata.append('gusets', guests);
-            formdata.append('start_date', format(dateRange.startDate, 'yyyy-MM-dd'));
-            formdata.append('end_date', format(dateRange.endDate, 'yyyy-MM-dd'));
-            formdata.append('number_of_nights', nights.toString());
-            formdata.append('total_price', totalPrice.toString());
-
-//we can call the backend api to post this request
-            const response = await apiService.post(`/api/properties/${property.id}/book/`, formdata);
-
-            if (response.success){
-                console.log("Booking successful")
-            } else {
-                console.log("something went wrong....")
+            const formData = new FormData();
+            formData.append('gusets', guests);
+            formData.append('start_date', format(dateRange.startDate, 'yyyy-MM-dd'));
+            formData.append('end_date', format(dateRange.endDate, 'yyyy-MM-dd'));
+            formData.append('number_of_nights', nights.toString());
+            formData.append('total_price', totalPrice.toString());
+            //we can call the backend api to post this request
+            const response = await apiService.post(`/api/properties/${property.id}/book/`, formData);
+            console.log('response', response)
+                if (response.success) {
+                    console.log('Bookin successful')
+                } else {
+                    console.log('Something went wrong...');
+                }
             }
+        } else {
+            loginModal.open();
         }
-    }else {
-        loginModal.open()
     }
-   }
-
 
 // Getting the specific date the gusts has booked and the end date
     const _setDateRange = (selection: any) => {
@@ -87,10 +88,33 @@ const ReservationSideBar: React.FC<ReservationSideBarProps> =({
             endDate: newEndDate
         })
     }
+
+    // creating reservation router for frontend and call thee function from useEffect
+    const getReservation = async () => {
+        const reservations = await apiService.get(`api/properties/${property.id}/reservations`)
+        // lets create array of dates using typescript function
+        let dates: Date[] = [];
+
+        reservations.forEach((reservation: any) => {
+            const range = eachDayOfInterval({
+                start: new Date(reservation.start_date),
+                end: new Date(reservation.end_date)
+            });
+            //  we unpack everything added here since this is a loop
+            dates = [...dates, ...range];
+        })
+        //  we define booked dates objects above
+        setBookedDates(dates);
+
+    }
+
+
 // Lets create a use effect when the page load and calender changes we see the instant data 
 //make sure the enddate start first and the 5 is a percentage discounts
 // GET THE TOTAL PRICE PER NIGHT AND THE FEE IF WE HAVE A GUEST
     useEffect(() => {
+        //getReservation();
+
         if (dateRange.startDate && dateRange.endDate){
             const dayCount = differenceInDays(
                 dateRange.endDate,
@@ -124,6 +148,7 @@ const ReservationSideBar: React.FC<ReservationSideBarProps> =({
                 {/* we can insert out date calenter here we can create setdateRange function above*/}
                 <DatePicker 
                     value={dateRange}
+                    bookedDates={bookeDates}
                     onChange={(value) => _setDateRange(value.selection)}
                 />
                 

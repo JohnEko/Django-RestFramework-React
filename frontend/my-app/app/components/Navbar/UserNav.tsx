@@ -3,11 +3,10 @@ import React, { useState } from "react";
 import UserLoginModal from "@/app/hooks/useLoginModal";
 import UseSignUpModal from "@/app/hooks/UseSignUpModal";
 import LogoutButton from "../LogoutButton";
-// import { Button } from "@/components/ui/button";
-// import { Menu } from "lucide-react";
-// import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 import MenuLink from "./MenuLink";
+import { Router } from "lucide-react";
 
 interface UserNavProps {
     userId?: string | null;
@@ -19,6 +18,7 @@ const UserNav: React.FC<UserNavProps> = ({
 }) => {
     const loginModal = UserLoginModal()
     const signUpModal = UseSignUpModal()
+    const router = useRouter();
     // using this function for our dropdown
     const [isOpen, setIsOpen] = useState(false)
     // working with the user navigation bar
@@ -44,8 +44,22 @@ const UserNav: React.FC<UserNavProps> = ({
                 <div className="w-[220px] absolute top-[60px] right-0 bg-white border rounded-xl shadow-md flex flex-col cursor-pointer">
                       {/* lets check is user is login so they cannot see the signin and login button  */}
                       {userId ?(
+                        <>
+                            <MenuLink 
+                                label={"my property"} 
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    router.push('/myproperty')
+                            } }/>
 
-                        <LogoutButton />
+                            <MenuLink 
+                                label={"my reservation"} 
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    router.push('/myreservations')
+                            } }/>
+                            <LogoutButton />
+                        </>
                       ) : (
                       
                       <>   

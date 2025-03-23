@@ -4,6 +4,7 @@ import ReservationSideBar from "../ReservationSideBar"
  
 import apiService from "@/app/services/apiService";
 import { getUserId } from "@/app/lib/actions";
+import Link from "next/link";
 import { stringify } from "node:querystring";
 import { PathParamsContext } from "next/dist/shared/lib/hooks-client-context.shared-runtime";
 import { parseAppSegmentConfig } from "next/dist/build/segment-config/app/app-segment-config";
@@ -16,6 +17,7 @@ const ProperDetailsPage = async ({params}: {params: {id: string}}) =>{
     // parsing the id return a errors 
     const property = await apiService.get(`/api/properties/${params.id}`)
     const userId  = await getUserId()
+   
     
 
     return(
@@ -42,8 +44,11 @@ const ProperDetailsPage = async ({params}: {params: {id: string}}) =>{
                     </span>
                         <hr />
 
-                    <div className="py-6 flex item-center space-x-4">
-                        {/* lets make an if statement here if the user have a image we show the url else no url */}
+                        {/* making the landlord page clickable change div to links and import link*/}
+                         {/* lets make an if statement here if the user have a image we show the url else no url */}
+                    <Link
+                        href={`/landlords/${property.landlord.id}`} 
+                        className="py-6 flex item-center space-x-4">
                         {property.name && (
                             <Image 
                                 src={property.landlord.avatar}
@@ -56,8 +61,10 @@ const ProperDetailsPage = async ({params}: {params: {id: string}}) =>{
                     )}
                         <p><strong>{property.landlord.name}</strong> is your Host</p>
 
-                    </div>
+                    </Link>
+
                     <hr />
+
                     <p className="mt-6 text-lg">
                     {property.description}
                     </p>

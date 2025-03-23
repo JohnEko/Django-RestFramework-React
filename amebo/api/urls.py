@@ -11,18 +11,20 @@ from . import api
 
 urlpatterns = [
     # This can be created in useraccount app for bigger projects
+    # The above url.py are for useraccount app and below for api account app
     path('auth/register/', RegisterView.as_view(), name='register'),
     path('auth/login/', LoginView.as_view(), name='rest_login'),
     path('logout/', LogoutView.as_view(), name='rest_logout'),
+    path('auth/<uuid:pk>/', api.landlord_detail, name='api_landlord_detail'),
+    path('auth/myreservations/', api.reservation_list, name='api_reservation_details'),
+     
 
     path('properties/', api.property_list, name='api_properties_list'),
     path('properties/create/', api.create_property, name='api_ctreate_property'),
     path('properties/<uuid:pk>/', api.property_detail, name='api_property_detail'),
     path('properties/<uuid:pk>/book/', api.book_property, name='api_book_property'),
+    path('properties/<uuid:pk>/reservations/', api.property_reservation, name='api_property_reservation'),
 
-    # path('home/', views.HomListAPIViews.as_view(), name='home'),
-    # path('news/<slug:slug>/', views.NewsDetailAPIView.as_view(), name='news'),
-    # path('create/', views.PostToCreateAPIView.as_view(), name='create'),
-    # path('update/<slug:slug>/', views.NewsToUpdateAPIView.as_view(), name='update'),
+
 
 ]
