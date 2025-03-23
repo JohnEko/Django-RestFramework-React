@@ -3,9 +3,9 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
-from .models import Category, Post, Comment, Property, Reservation 
+from .models import Category, Post, Comment, Property, Reservation, User 
 from .forms import PostForm, PropertyForm
-from .serializers import PostSerializer, CategorySerializer, CommentSerializer, PropertiesSerializer, PropertyDetailSerializer
+from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer
 
 # Create your views here.
 
@@ -25,11 +25,29 @@ def property_list(request):
 @authentication_classes([])
 @permission_classes([])
 def property_detail(request, pk):
-    property = Property.objects.get(pk=pk)
-    serializer = PropertyDetailSerializer(property, many=False)
+    properties = Property.objects.get(pk=pk)
+
+    landlord_id = request.GET.get('landlord_id', '')
+
+# filtering the loadlord by there id
+    if landlord_id:
+        properties = properties.filter(landlord_id=landlord_id)
+
+    serializer = PropertyDetailSerializer(properties, many=False)
 
     return JsonResponse(serializer.data)
 
+
+# creating a reservation for guest
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def property_reservation(request, pk):
+    propertys = Property.objects.get(pk=pk)
+    reservations = propertys.reservations.all()
+
+    serializer = ReservationListSerializer(reservations, many=True)
+    return JsonResponse(serializer.data, safe=False)
 
 
 @api_view(['POST', 'FILES'])
@@ -37,10 +55,10 @@ def create_property(request):
     # I need to add the model here so form can get the property
     form = PropertyForm(request.POST, request.FILES)
     if form.is_valid():
-        property=form.save(commit=False)
+        propertys=form.save(commit=False)
         # let check if user is authenticate
-        property.landlord = request.user
-        property.save()
+        propertys.landlord = request.user
+        propertys.save()
 
         return JsonResponse({'success' : True})
     
@@ -49,7 +67,7 @@ def create_property(request):
         return JsonResponse({'errors': form.errors.as_json()}, status=400)
         
 
-
+# this suppose to be in useraccount app
 @api_view(['POST'])
 def book_property(request, pk):
     try:
@@ -59,10 +77,10 @@ def book_property(request, pk):
         total_price = request.POST.get('total_price', '')
         guests = request.POST.get('guests', '')
 
-        property = Property.objects.get(pk=pk)
+        propertys = Property.objects.get(pk=pk)
 
         Reservation.objects.create(
-            property=property,
+            property=propertys,
             start_date=start_date,
             number_of_night=number_of_night,
             end_date=end_date,
@@ -70,11 +88,44 @@ def book_property(request, pk):
             guests=guests,
             created_by=request.user
         )
+        return JsonResponse({'success': True})
 
     except Exception as e:
         print('Error', e)
 
         return JsonResponse({'success': False})
+
+
+
+# this below code suppose to be in useraccount app
+@api_view(['GET'])
+@authentication_classes([])
+@permission_classes([])
+def landlord_detail(request, pk):
+    user = User.objects.get(pk=pk)
+
+    serializer = UserDetailSerializer(user, many=False)
+
+    return JsonResponse(serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def reservation_list(request):
+    reservations = request.user.reservation.all()
+
+    serializer =UserDetailSerializer(reservations, many=False)
+    return JsonResponse(serializer.data, safe=False)
+
+
+
+
+
+
+
+
+
+
+
 
 
 

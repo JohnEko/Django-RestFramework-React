@@ -1,8 +1,12 @@
 import ContactButton from "@/app/components/ContactButton"
 import PropertyList from "@/app/components/property/PropertyList"
+import { getUserId } from "@/app/lib/actions"
+import apiService from "@/app/services/apiService"
 import Image from "next/image"
 
-const LandlordDetailPage = () =>{
+const LandlordDetailPage = async ({ params}: {params: {id: string}}) =>{
+    const  landlord = await apiService.get(`/api/auth/${params.id}`)
+    const userId = getUserId();
 
     return(
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
@@ -19,19 +23,24 @@ const LandlordDetailPage = () =>{
                         
                         />
 
-                        <h1 className="mt-6 text-2xl">Landlord Name</h1>
-
+                        <h1 className="mt-6 text-2xl">{landlord.name}</h1>
+                        {await userId != params.id && (
                         <ContactButton />
+                    )}
                     </div>
                 </aside>
 
                 {/* this shift the text to the right place 
                 and if we want to get the tpix horizontally we use this
                 On smaller devices col-span-1  and larger devices md:col-span-3
-                to make the screen balance check the top dev col-span on smaller and larger devices*/}
+                to make the screen balance check the top dev col-span on smaller and larger devices
+                we can parse landlord_ir on propertyList function*/}
                 <div className="col-span-1 md:col-span-3 pl-0 md:pl-6">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <PropertyList />
+                        <PropertyList
+                            landlord_id={params.id}
+                        />
+
                     </div>
                    
                 </div>
