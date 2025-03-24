@@ -12,6 +12,20 @@ const MyReservationPage = async () =>{
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
            
             <h1 className="my-6 text-2xl">Reservation</h1>
+
+            <div className="p-5 grid grid-col-1 md:grid-cols-4 gap-4 shadow-md border border-gray-300 rounded-xl">
+                            <div className="col-span-1">
+                                <div className="relative overflow-hidden aspect-square rounded-xl">
+                                    <Image 
+                                        fill
+                                        src='/villa.jpg'
+                                        className="hover:scale-110 object-cover transition h-screen w-full"
+                                        alt="Beach"
+                                    />
+                                </div>
+                            </div>
+                            </div>
+
             <div className="space-y-4">
                 {reservations && reservations.map && reservations.map((reservation : any) => {
                     return(
@@ -26,6 +40,7 @@ const MyReservationPage = async () =>{
                                     />
                                 </div>
                             </div>
+                            
 
                                 {/* we create space in each of the links or elements 
                                 for smaller and lager devices col-span-1 md:col-span-3 */}
@@ -37,12 +52,14 @@ const MyReservationPage = async () =>{
 
                                 <p className="space-y-2"><strong>Number of Nights:</strong>{reservation.number_of_night}</p>
                                 <p className="space-y-2"><strong>Total price:</strong> ${reservation.totalPrice}</p>
+
+                                <div className="mt-6 inline-block cursor-pointer py-4 px-6 bg-red-500 text-gray font-bold rounded-xl">My Reservation</div>
                             
                                 <Link
                                     href={`/property/${reservation.property.id}`}
                                     className="mt-6 inline-block cursor-pointer py-4 px-6 bg-red-500 text-gray font-bold rounded-xl"
                                     >
-                                    My Reservation
+                                        My Reservation
                                 
                                 </Link>
                             

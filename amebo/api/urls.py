@@ -24,6 +24,7 @@ urlpatterns = [
     path('properties/<uuid:pk>/', api.property_detail, name='api_property_detail'),
     path('properties/<uuid:pk>/book/', api.book_property, name='api_book_property'),
     path('properties/<uuid:pk>/reservations/', api.property_reservation, name='api_property_reservation'),
+    path('properties/<uuid:pk>/favorite/', api.toggle_favorite, name='api_toggle_favorite'),
 
 
 
