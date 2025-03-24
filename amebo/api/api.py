@@ -3,6 +3,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
+from rest_framework.simplejwt.token import AccessToken
 from .models import Category, Post, Comment, Property, Reservation, User 
 from .forms import PostForm, PropertyForm
 from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer
@@ -15,9 +16,30 @@ from .serializers import PropertiesSerializer, PropertyDetailSerializer, Reserva
 @authentication_classes([])
 @permission_classes([])
 def property_list(request):
+    # Check Authentications
+    try:
+        token = request.META['HTTP_AUTHORIZATION'].split('Bearer ')[1]
+        token = AccessToken[token]
+        user_id =token.payload['user_id']
+        user = User.objects.get(pk=user_id)
+    except Exception as e:
+        user = None
+
+    favorites = []
     properties = Property.objects.all()
+    # get landlord id
+    landlord_id = request.GET.get('landlord_id', '')
+    if landlord_id:
+        properties = properties.filter(landlord_id=landlord_id)
+    # Favorites user apartment or news atlets
+    if user:
+        for property in properties:
+            if user in property.favorited.all():
+                favorites.append(property.id)
+
     serializer = PropertiesSerializer(properties, many=True)
-    return JsonResponse({'data' : serializer.data})
+    return JsonResponse({'data' : serializer.data,
+                         'favorites' : favorites})
 
 
 
@@ -32,6 +54,8 @@ def property_detail(request, pk):
 # filtering the loadlord by there id
     if landlord_id:
         properties = properties.filter(landlord_id=landlord_id)
+
+
 
     serializer = PropertyDetailSerializer(properties, many=False)
 
@@ -94,6 +118,20 @@ def book_property(request, pk):
         print('Error', e)
 
         return JsonResponse({'success': False})
+
+@api_view(['POST'])   
+def toggle_favorite(request, pk):
+    properties = Property.objects.get(pk=pk)
+
+    if request.user in properties.favourited.all():
+        properties.favourited.remove(request.user)
+
+        return JsonResponse({'is_favorite' : False})
+    
+    else:
+        properties.favourited.add(request.user)
+
+        return JsonResponse({'is_favorite': True})
 
 
 
