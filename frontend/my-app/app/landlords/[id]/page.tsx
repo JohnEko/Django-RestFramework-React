@@ -24,7 +24,7 @@ const LandlordDetailPage = async ({ params}: {params: {id: string}}) =>{
                         />
 
                         <h1 className="mt-6 text-2xl">{landlord.name}</h1>
-                        {await userId != params.id && (
+                        {await userId != await params.id && (
                         <ContactButton />
                     )}
                     </div>
