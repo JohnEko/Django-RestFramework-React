@@ -3,10 +3,10 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
-from rest_framework.simplejwt.token import AccessToken
+from rest_framework_simplejwt.tokens import AccessToken
 from .models import Category, Post, Comment, Property, Reservation, User 
 from .forms import PostForm, PropertyForm
-from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer
+from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer, ConversationListSerializer
 
 # Create your views here.
 
@@ -27,10 +27,17 @@ def property_list(request):
 
     favorites = []
     properties = Property.objects.all()
-    # get landlord id
+
+    # Filterget landlord id
+    is_favorites = request.GET.get('is_favorites', '')
     landlord_id = request.GET.get('landlord_id', '')
+
     if landlord_id:
         properties = properties.filter(landlord_id=landlord_id)
+
+# this will go to the backend and check the many to many field and return to the user
+    if is_favorites:
+        properties = properties.filter(favorited__in=[user])
     # Favorites user apartment or news atlets
     if user:
         for property in properties:
@@ -154,8 +161,11 @@ def reservation_list(request):
     serializer =UserDetailSerializer(reservations, many=False)
     return JsonResponse(serializer.data, safe=False)
 
+@api_view(['GET'])
+def conversation_list(request):
+    serializer = ConversationListSerializer(request.user.conversation.all(), many=True)
 
-
+    return JsonResponse(serializer.data, safe=False)
 
 
 

@@ -1,6 +1,6 @@
 from rest_framework import serializers 
 from django.core import serializers as core_serializers
-from .models import Post, Category, Comment, Property, User, Reservation
+from .models import Post, Category, Comment, Property, User, Reservation, ConversationMessage, Conversation
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -48,3 +48,10 @@ class ReservationListSerializer(serializers.ModelSerializer):
             'id', 'start_date', 'end_date', 'number_of_night', 'total_price', 'property'
         )
 
+
+class ConversationListSerializer(serializers.ModelSerializer):
+    users = UserDetailSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Conversation
+        fields = ('id', 'users', 'modified_at',)
