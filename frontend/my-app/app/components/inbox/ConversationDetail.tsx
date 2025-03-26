@@ -2,6 +2,7 @@
 
 import { Label } from "@radix-ui/react-dropdown-menu"
 import CustomeButton from "../forms/CustomButton"
+import { ConversationType } from "@/app/inbox/page"
 
 const ConversationDetail =()=>{
 
