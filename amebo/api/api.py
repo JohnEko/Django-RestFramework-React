@@ -6,7 +6,7 @@ from rest_framework import generics, status
 from rest_framework_simplejwt.tokens import AccessToken
 from .models import Category, Post, Comment, Property, Reservation, User 
 from .forms import PostForm, PropertyForm
-from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer, ConversationListSerializer
+from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer, ConversationListSerializer, ConservationDetailSerializer
 
 # Create your views here.
 
@@ -169,7 +169,15 @@ def conversation_list(request):
 
 
 
+@api_view(['GET'])
+def conversation_details(request, pk):
+    conversation = request.user.conversations.get(pk=pk)
 
+    conversation_serializer = ConservationDetailSerializer(conversation, many=False)
+
+    return JsonResponse({
+        'conversation' : conversation_serializer.data
+    }, safe=False)
 
 
 

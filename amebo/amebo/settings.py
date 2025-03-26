@@ -27,6 +27,13 @@ AUTH_USER_MODEL = 'api.User'
 SITE_ID = 1
 
 WEBSITE_URL = 'HTTP:localhost:8000',
+
+
+CHANNEL_LAYERS = {
+    'default' : {
+        'BACKEND' : 'channels.layers.InMemoryChennelLayer'
+    }
+}
 # djangorestframework-simplejwt
 SIMPLE_JWT ={ 
                 "ACCESS_TOKEN_LIFETIME":timedelta(minutes=60),
@@ -88,6 +95,7 @@ REST_AUTH = {
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -136,6 +144,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'amebo.wsgi.application'
+ASGI_APPLICATION = 'amebo.asgi.application'
 
 
 # Database
