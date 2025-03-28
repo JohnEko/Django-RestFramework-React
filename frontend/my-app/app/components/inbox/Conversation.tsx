@@ -17,7 +17,7 @@ const Conversation: React.FC<ConversationProps> = ({
 
     const ruoter = useRouter()
     // now check which user we talking with
-    const otherUser = conversation.users.find((user) => user.id != userId)
+    const otherUser = conversation.users?.find((user) => user.id != userId)
 
     return(
         // This will make you see the user you having conversation with

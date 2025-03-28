@@ -1,6 +1,6 @@
 import json
 
-# this store message in the db
+# this aync to asyc store message in the db
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
@@ -19,7 +19,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-        await self.connect()
+        await self.accept()
 
     async def disconnect(self):
         # Leave the chat room

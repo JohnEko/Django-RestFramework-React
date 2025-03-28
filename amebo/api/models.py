@@ -154,7 +154,7 @@ class Reservation(models.Model):
 
 class Conversation(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    users = models.ManyToManyField(User, related_name='conversation')
+    user = models.ManyToManyField(User, related_name='conversation')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
