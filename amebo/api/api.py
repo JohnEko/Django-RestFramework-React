@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
 from rest_framework_simplejwt.tokens import AccessToken
-from .models import Category, Post, Comment, Property, Reservation, User 
+from .models import Category, Post, Comment, Property, Reservation, User, Conversation 
 from .forms import PostForm, PropertyForm
 from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer, ConversationListSerializer, ConservationDetailSerializer
 
@@ -171,7 +171,7 @@ def conversation_list(request):
 
 @api_view(['GET'])
 def conversation_details(request, pk):
-    conversation = request.user.conversations.get(pk=pk)
+    conversation = request.user.conversation.get(pk=pk)
 
     conversation_serializer = ConservationDetailSerializer(conversation, many=False)
 

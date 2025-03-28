@@ -31,7 +31,8 @@ WEBSITE_URL = 'HTTP:localhost:8000',
 
 CHANNEL_LAYERS = {
     'default' : {
-        'BACKEND' : 'channels.layers.InMemoryChennelLayer'
+        'BACKEND' : 'channels.layers.InMemoryChannelLayer' 
+
     }
 }
 # djangorestframework-simplejwt

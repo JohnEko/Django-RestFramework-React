@@ -3,8 +3,36 @@
 import { Label } from "@radix-ui/react-dropdown-menu"
 import CustomeButton from "../forms/CustomButton"
 import { ConversationType } from "@/app/inbox/page"
+import React, { useEffect } from "react";
+import useWebSocket, {ReadyState} from "react-use-websocket"
 
-const ConversationDetail =()=>{
+interface ConversationDetailProps {
+    userId: string;
+    token: string;
+    conversation: ConversationType;
+}
+
+const ConversationDetail: React.FC<ConversationDetailProps> =({
+    userId,
+    token,
+    conversation
+})=>{
+    const myUser = conversation.users?.find((user) => user.id == userId)
+    const otherUser = conversation.users?.find((user) => user.id != userId)
+    //const url = '127.0.0.1:8000/api/properties/'
+
+    // Lets connect to the websockets
+    const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket(`ws:127.0.0.1:8000/ws/${conversation.id}/?token=${token}`, {
+        share: false,
+        shouldReconnect: () => true,
+
+      },
+    )
+    // we can call our connection or connect with useeffect to the frontend
+    useEffect(() => {
+        console.log("Connection state changed", readyState)
+    }, [readyState])
+
 
     return(
         // Here is where we like to have our messages
