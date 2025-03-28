@@ -7,6 +7,7 @@ import Modal from "./components/modals/Modals";
 import LoginModal from "./components/modals/Login";
 import SignUpModal from "./components/modals/SignUpModal";
 import AddPropertyModal from "./components/modals/AddPropertyModal";
+import SearchModal from "./components/modals/SearchModal";
 
 
 
@@ -56,6 +57,7 @@ export default function RootLayout({
         /> */}
         <LoginModal />
         <SignUpModal />
+        <SearchModal />
         <AddPropertyModal />
       </body>
     </html>
