@@ -4,9 +4,9 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework import generics, status
 from rest_framework_simplejwt.tokens import AccessToken
-from .models import Category, Post, Comment, Property, Reservation, User, Conversation 
+from .models import Category, Post, Comment, Property, Reservation, User, Conversation, ConversationMessage
 from .forms import PostForm, PropertyForm
-from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer, ConversationListSerializer, ConservationDetailSerializer
+from .serializers import PropertiesSerializer, PropertyDetailSerializer, ReservationListSerializer, UserDetailSerializer, ConversationListSerializer, ConservationDetailSerializer, ConversationMessageSerializer
 
 # Create your views here.
 
@@ -174,63 +174,30 @@ def conversation_details(request, pk):
     conversation = request.user.conversation.get(pk=pk)
 
     conversation_serializer = ConservationDetailSerializer(conversation, many=False)
+    message_serializer = ConversationMessageSerializer(conversation.messages.all(), many=True)
 
     return JsonResponse({
-        'conversation' : conversation_serializer.data
+        'conversation' : conversation_serializer.data,
+        'messages': message_serializer.data
     }, safe=False)
 
 
 
+@api_view(['GET'])
+def conversation_start(request, user_id):
+    # filter the conversation i am in
+    conversations = Conversation.objects.filter(user__in=[user_id]).filter(user__in=[request.user.id])
 
+    # get the all conversation incase there are no conversation
+    if conversations.count() > 0:
+        conversation = conversations.first()
 
-
-
-
-# # class HomListAPIViews(generics.ListAPIView):
-# #     serializer_class = PostSerializer
-
-# #     def get_queryset(self):
-# #         post = Post.objects.all()
-        
-# #         return(post)
+        return JsonResponse({'success': True, 'conversation_id': conversation.id})
     
-# # class NewsDetailAPIView(generics.GenericAPIView):
+    else:
+        user = User.objects.get(pk=user_id)
+        conversation = Conversation.objects.create()
+        conversation.user.aadd(request.user)
+        conversation.user.add(user)
 
-# #     serializer_class=PostSerializer
-
-# #     def get(self, request, slug):
-# #         post=Post.objects.filter(slug=slug).first()
-# #         serializer = self.serializer_class(post)
-
-# #         if serializer:
-# #             return Response(serializer.data)
-# #         return Response("Not Found", status=status.HTTP_404_NOT_FOUND)
-    
-
-# # class PostToCreateAPIView(generics.CreateAPIView):
-
-# #     serializer_class = PostSerializer
-
-# #     def get_queryset(self):
-# #         serializer =self.serializer_class
-# #         if serializer.is_valid():
-# #             serializer.save()
-# #             return Response(serializer.data, status=status.HTTP_201_Created)
-# #         return Response(serializer.error, status=status.HTTP_400_BAD_REQUEST)
-
-
-# # class NewsToUpdateAPIView(generics.UpdateAPIView):
-# #     serializer_class = PostSerializer
-   
-# #     def perform_update(self, request, pk):
-# #         post=Post.objects.filter(id=pk).first()
-# #         serializer = self.serializer_class(post)
-        
-# #         if serializer.is_valid:
-# #             serializer.save()
-           
-# #             return Response(serializer, status=status.HTTP_200_OK)
-# #         return Response(serializer.error, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-    
-    
-    
+        return JsonResponse({'success': True, 'conversation_id': conversation.id})

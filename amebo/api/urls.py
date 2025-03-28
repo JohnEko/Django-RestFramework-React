@@ -27,7 +27,9 @@ urlpatterns = [
     path('properties/<uuid:pk>/favorite/', api.toggle_favorite, name='api_toggle_favorite'),
     path('properties/conversation/', api.conversation_list, name='api_conversation_list'),
 
-     path('<uuid:pk>/', api.conversation_details, name='api_conversation_details'),
+    path('<uuid:pk>/', api.conversation_details, name='api_conversation_details'),
+    path('start/<uuid:user_id>/', api.conversation_start, name='api_conversation_start'),
+
 
 
 

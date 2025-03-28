@@ -6,7 +6,7 @@ import Image from "next/image"
 
 const LandlordDetailPage = async ({ params}: {params: {id: string}}) =>{
     const  landlord = await apiService.get(`/api/auth/${params.id}`)
-    const userId = getUserId();
+    const userId:any = getUserId();
 
     return(
         <main className="max-w-[1500px] mx-auto px-6 pb-6">
@@ -22,10 +22,13 @@ const LandlordDetailPage = async ({ params}: {params: {id: string}}) =>{
                             className="rounded-full"
                         
                         />
-
+                        lets parse our id and landlord we want to talk to
                         <h1 className="mt-6 text-2xl">{landlord.name}</h1>
                         {await userId != await params.id && (
-                        <ContactButton />
+                        <ContactButton
+                            userId={userId}
+                            landlordId={params.id}
+                        />
                     )}
                     </div>
                 </aside>

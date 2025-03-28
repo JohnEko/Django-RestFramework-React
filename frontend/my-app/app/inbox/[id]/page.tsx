@@ -10,7 +10,7 @@ export type MessageType = {
     id: string,
     name: string,
     body: string,
-    conversation: string,
+    conversationId: string,
     sent_to: UserType,
     created_by: UserType
 }
@@ -36,6 +36,7 @@ const ConversationPage = async ({params}: {params: {id: string}}) =>{
                 <ConversationDetail 
                     userId = {userId}
                     token = {token}
+                    messages={conversation.messages}
                     conversation={conversation}
                 />
            
