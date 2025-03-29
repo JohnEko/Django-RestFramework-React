@@ -8,7 +8,7 @@ const SearchFilters = () => {
     return (
         // if i click any link up i am present with search modal
         <div 
-            onClick={() => searchModal.open()}
+            onClick={() => searchModal.open('location')}
             className="h-[48px] lg:h-[64] flex flex-row items-center justify-between border rounded-full"
         >
             <div className="hidden lg:block">
