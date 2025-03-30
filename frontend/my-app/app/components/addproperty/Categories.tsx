@@ -1,4 +1,5 @@
 //lets build an interface to set categories
+// this is the Category property for the frontend 
 import Image from "next/image";
 
 interface CategoriesProps {

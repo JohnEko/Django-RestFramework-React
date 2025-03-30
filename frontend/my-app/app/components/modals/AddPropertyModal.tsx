@@ -80,7 +80,7 @@ const AddPropertyModal = () => {
 
             if (response.success) {
                 console.log('SUCCESS :-D');
-
+// redirect to the frontpage
                 router.push('/?added=true');
 
                 addPropertyModal.close();
