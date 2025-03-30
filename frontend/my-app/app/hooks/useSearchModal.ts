@@ -2,9 +2,9 @@ import { create } from "zustand"
 
 // we need export to know what we want to search from on the backend export the data
 export type SearchQuery ={
-    country: string;
-    checkIn: Date | null;
-    checkOut: Date | null;
+    country: string | undefined;
+    checkIn: Date | undefined;
+    checkOut: Date | undefined;
     guests: Number;
     bathrooms: Number;
     bedrooms: Number;
@@ -23,16 +23,16 @@ interface SearchModalStore{
 
 }
 
-const useSearchLoginModal = create<SearchModalStore>((set) => ({
+const useSearchModal = create<SearchModalStore>((set) => ({
     isOpen: false,
     step: '',
     open: (step) =>set({isOpen: true, step : step}),
     close: () => set({isOpen: false}),
     setQuery: (query: SearchQuery) => set({query: query}),
     query: {
-        country: '',
-        checkIn: null,
-        checkOut: null,
+        country: undefined,
+        checkIn: undefined,
+        checkOut: undefined,
         guests: 1,
         bedrooms: 0,
         bathrooms: 0,
@@ -40,4 +40,4 @@ const useSearchLoginModal = create<SearchModalStore>((set) => ({
     }
     
 }));
-export default useSearchLoginModal
+export default useSearchModal

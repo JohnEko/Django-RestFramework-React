@@ -28,6 +28,17 @@ const SearchModal = () => {
 
     //Create a function that will search all the details the user has parse from the backend
     const closeAndSearch = () => {
+        const newSearchQuery =  {
+            country: country?.label,
+            checkIn: dateRange.startDate,
+            checkOut: dateRange.endDate,
+            guests: parseInt(numGuests),
+            bedrooms: parseInt(numBedrooms),
+            bathrooms: parseInt(numBathrooms),
+            category: ''
+
+        }
+        searchModal.setQuery(newSearchQuery);
         searchModal.close()
     }
 

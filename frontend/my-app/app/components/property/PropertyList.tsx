@@ -1,13 +1,13 @@
 'use client';
 
-import Image from "next/image";
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react"
+import { useSearchParams } from "next/navigation";
 import PropertyListItem from "./PropertyListItem"
 import apiService from "@/app/services/apiService";
+import useSearchModal from "@/app/hooks/useSearchModal";
 
-import { URL } from "url";
-import { resolve } from "path";
-import { json } from "stream/consumers";
+
 
 
 export type PropertyType ={
@@ -28,6 +28,19 @@ const PropertyList: React.FC<PropertyListProps> = ({
     favorites
 
 }) =>{
+    const params = useSearchParams()
+    const searchModal = useSearchModal()
+    const country = searchModal.query.country;
+    const numGuests = searchModal.query.guests;
+    const numBathrooms = searchModal.query.bathrooms;
+    const numBedrooms = searchModal.query.bedrooms;
+    const checkIn = searchModal.query.checkIn;
+    const checkOut = searchModal.query.checkOut;
+    const category = searchModal.query.category;
+
+
+
+
     //lets create a list of the properties and usestate to get property type
     const [properties, setProperties] = useState<PropertyType[]>([]);
 
@@ -49,8 +62,10 @@ const PropertyList: React.FC<PropertyListProps> = ({
         setProperties(tmpProperties)
     }
 
-    // this will be asyn function
+    // sEARCH METHODS function
     // we can parse the landlord_id to the url
+    //to check the user checking checkout and the things which the property have
+    //also we will remove the first letter & if not we cant read it from the backend
     const getProperties = async () =>{
         //get our url from service.apiServicethe backend and get a specific landlord_id or user_id
         let url = '/api/properties/'
@@ -59,7 +74,48 @@ const PropertyList: React.FC<PropertyListProps> = ({
             url += `?landlord_id=${landlord_id}` 
         }else if(favorites) {
                 url +='?is_favorites=true'
+        }else {
+            let urlQuery = '';
+            if (country) {
+                urlQuery += '&country' + country
+            }
+
+            if (numGuests) {
+                urlQuery += '&guests' + numGuests
+            }
+
+            if (numBathrooms) {
+                urlQuery += '&bathrooms' + numBathrooms
+            }
+
+            if (numBedrooms) {
+                urlQuery += '&bedrooms' + numBedrooms
+            }
+
+            if (category) {
+                urlQuery += '&category' + category
+            }
+
+            if (checkIn) {
+                urlQuery += '&checkin' + format(checkIn, 'yyyy-MM-dd')
+            }
+
+            if (checkOut) {
+                urlQuery += '&checkout' + format(checkOut, 'yyyy-MM-dd')
+            }
+
+            if (urlQuery.length) {
+                console.log('Query:', urlQuery)
+                // this will remove the amber sign & so we can read the message from the backend
+                urlQuery = '?' + urlQuery.substring(1)
+                // we append the url query t the url we have up there
+                //after the query add category to getProperty useeffect
+                url += urlQuery 
+            }
+           
         }
+
+
         const tmpProperty = await apiService.get(url)
         setProperties(tmpProperty.data)
     };
@@ -67,7 +123,7 @@ const PropertyList: React.FC<PropertyListProps> = ({
     //this will load only when the page is loaded
     useEffect(() => {
         getProperties();
-    }, []);
+    }, [category, searchModal.query, params]);
 
     return(
         <>
