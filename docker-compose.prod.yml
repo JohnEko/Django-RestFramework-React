@@ -1,0 +1,31 @@
+
+
+services:
+  nginx:
+    build: ./nginx
+    ports: 
+      - 1330:80
+
+  depends_on:
+    - web  
+  
+  web:
+    build: /mnt/c/Users/T540p/Desktop/amebo/amebo
+    command: gunicorn amebo.wsgi.application --bind 0.0.0.0:8000
+    volumes:
+      - ./amebo/amebo/:/usr/src/amebo/amebo/
+    ports:
+      - 8000:8000
+      # this file create is you are in dev or prod and ur secret keys
+    env_file:
+      - ./.env.dev
+
+  depends_on:
+    - db
+    - daphne
+  daphne:
+    build: ./path
+    command: daphne --bind 0.0.0.0 -p 8000 app_name.asgi:application
+    ports:
+      -: 8002:8002
+  

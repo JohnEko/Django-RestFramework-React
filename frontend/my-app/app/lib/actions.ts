@@ -1,4 +1,5 @@
 "use server"
+
 //we want this to run on the server not on browser for security reasons
 
 import { cookies } from "next/headers"
@@ -7,12 +8,12 @@ import { cookies } from "next/headers"
 export async function handleRefresh() {
     // to know where this is happening
     console.log('handlerefresh')
-    const refreashToken = getRefreshToken()
+    const refreshToken = await getRefreshToken()
     //lets talk to the backend to get the correct token there
-    const token = await fetch('http://localhost:8000/api/auth/token/refresh', {
+    const token = await fetch('http://localhost:8000/api/auth/token/refresh/', {
         method: 'POST',
         body: JSON.stringify({
-            refresh: refreashToken,       
+            refresh: refreshToken       
         }),
         headers: {
             'Accept': 'application/json',
@@ -43,7 +44,7 @@ export async function handleRefresh() {
             resetAuthCookies();
         })
     
-        return token
+    return token
 }
 
 export async function handleLogin(userId:string, accessToken: string, refreashToken: string) {
@@ -88,7 +89,7 @@ export async function getUserId() {
 }
 //Get user access token
 export async function getAccessToken(){
-    let accessToken = (await cookies()).get('session_access_token')?.value;
+    let accessToken = (await cookies()).get('session_access_token')?.value
     // lets check if we dont have access token, giving a new access token by setting this one
     if (!accessToken){
         accessToken = await handleRefresh()
@@ -100,7 +101,7 @@ export async function getAccessToken(){
 //Get user refresh token to stay online for a week
 //it has already been set in the cookies if you take a look up above the code
 export async function getRefreshToken(){
-    let refreshToken = (await cookies()).get('session_refresh_token')?.value;
+    let refreshToken = (await cookies()).get('session_refresh_token')?.value
 
     return refreshToken
 }

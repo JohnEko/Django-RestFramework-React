@@ -26,7 +26,11 @@ AUTH_USER_MODEL = 'api.User'
 
 SITE_ID = 1
 
-WEBSITE_URL = 'HTTP:localhost:8000',
+# for production
+if DEBUG:
+    WEBSITE_URL = 'HTTP:localhost:8000'
+else:
+    WEBSITE_URL = 'SERVERHOST:PORT'
 
 
 CHANNEL_LAYERS = {

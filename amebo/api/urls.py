@@ -17,7 +17,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='rest_logout'),
     path('auth/<uuid:pk>/', api.landlord_detail, name='api_landlord_detail'),
     path('auth/myreservations/', api.reservation_list, name='api_reservation_details'),
-    path('token/refresh/', get_refresh_view().as_view(), name='token_refresh'),
+    path('auth/token/refresh/', get_refresh_view().as_view(), name='token_refresh'),
      
 
     path('properties/', api.property_list, name='api_properties_list'),
